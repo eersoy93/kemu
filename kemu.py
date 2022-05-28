@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import os
 import subprocess
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QPushButton,
@@ -27,10 +28,10 @@ class Kemu(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.imageLabel = QLabel("Image file location:")
+        self.imageLabel = QLabel("CD-ROM Image file location:")
         self.imageLine = QLineEdit()
 
-        self.memoryLabel = QLabel("Memory file location:")
+        self.memoryLabel = QLabel("Memory size:")
         self.memoryLine = QLineEdit()
 
         self.otherLabel = QLabel("Other command line arguments:")
@@ -99,10 +100,12 @@ class Kemu(QWidget):
         self.aboutQtBox = QMessageBox.aboutQt(self, "About Qt")
 
     def onRun(self, event):
-        subprocess.run("qemu-system-x86_64.exe" +
-                       "-m" + self.memoryLine.text() +
-                       self.otherLine.text() +
-                       self.imageLine.text())
+        print(os.path.join(os.environ.get("PROGRAMFILES"), "qemu", "qemu-system-x86_64w.exe"))
+        subprocess.call(os.path.join(os.environ.get("PROGRAMFILES"), "qemu", "qemu-system-x86_64w.exe") + " " +
+                        "-m " + self.memoryLine.text() + " " +
+                        "-cdrom " + self.imageLine.text() + " " +
+                        self.otherLine.text() + " "
+                        )
 
 def main(args):
     app = QApplication(sys.argv)
