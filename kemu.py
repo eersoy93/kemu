@@ -18,6 +18,8 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QPushButton,
                              QLabel, QLineEdit, QGridLayout, QMessageBox)
 
+from version import KEMU_VERSION
+
 class Kemu(QWidget):
     def __init__(self):
         super().__init__()
@@ -38,6 +40,9 @@ class Kemu(QWidget):
 
         self.aboutButton = QPushButton("About")
         self.aboutButton.clicked.connect(self.onAbout)
+        
+        self.aboutQtButton = QPushButton("About Qt")
+        self.aboutQtButton.clicked.connect(self.onAboutQt)
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setSpacing(10)
@@ -52,7 +57,10 @@ class Kemu(QWidget):
         self.gridLayout.addWidget(self.otherLine, 3, 1, 1, 3)
 
         self.gridLayout.addWidget(self.runButton, 4, 0, 1, 4)
+
         self.gridLayout.addWidget(self.aboutButton, 5, 0, 1, 4)
+
+        self.gridLayout.addWidget(self.aboutQtButton, 6, 0, 1, 4)
 
         self.setLayout(self.gridLayout)
         self.setFixedSize(500, 200)
@@ -77,8 +85,17 @@ class Kemu(QWidget):
         else:
             event.ignore()
 
-    def onAbout(self, event):
-        print("About")  # DEBUG
+    def onAbout(self):
+        self.aboutBox = QMessageBox.about(self,
+                                          "About Kemu",
+                                          "Kemu " + KEMU_VERSION + "\n" +
+                                          "Written by Erdem Ersoy (eersoy93).\n" +
+                                          "Copyright (c) 2022 Erdem Ersoy\n" +
+                                          "Kemu is licensed with GPLv3.\n" +
+                                          "Kemu GitHub link: https://github.com/eersoy93/kemu")
+
+    def onAboutQt(self):
+        self.aboutQtBox = QMessageBox.aboutQt(self, "About Qt")
 
     def onRun(self, event):
         print("Run")  # DEBUG
