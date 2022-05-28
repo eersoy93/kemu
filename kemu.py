@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import subprocess
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QPushButton,
                              QLabel, QLineEdit, QGridLayout, QMessageBox)
@@ -98,7 +99,10 @@ class Kemu(QWidget):
         self.aboutQtBox = QMessageBox.aboutQt(self, "About Qt")
 
     def onRun(self, event):
-        print("Run")  # DEBUG
+        subprocess.run("qemu-system-x86_64.exe" +
+                       "-m" + self.memoryLine.text() +
+                       self.otherLine.text() +
+                       self.imageLine.text())
 
 def main(args):
     app = QApplication(sys.argv)
